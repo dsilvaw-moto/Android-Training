@@ -6,6 +6,8 @@
     package="au.com.gridstone.trainingkotlin"
     >
 
+  <uses-permission android:name="android.permission.INTERNET"/>
+
   <application
       android:allowBackup="false"
       android:icon="@mipmap/ic_launcher"

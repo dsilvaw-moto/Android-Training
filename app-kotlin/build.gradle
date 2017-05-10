@@ -36,6 +36,19 @@ android {
 }
 
 dependencies {
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.41'
-  implementation 'com.android.support:appcompat-v7:27.1.1'
+  compile 'org.jetbrains.kotlin:kotlin-stdlib:1.2.41'
+  compile 'com.android.support:appcompat-v7:27.1.1'
+  compile 'com.android.support:recyclerview-v7:27.1.1'
+  compile 'com.android.support:design:27.1.1'
+  compile 'io.reactivex.rxjava2:rxjava:2.1.13'
+  compile 'io.reactivex.rxjava2:rxandroid:2.0.2'
+  compile 'com.bluelinelabs:conductor:2.1.4'
+  compile 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.1.1'
+  compile 'com.squareup.picasso:picasso:2.5.2'
+  compile 'com.squareup.moshi:moshi:1.5.0'
+  compile 'com.squareup.okhttp3:okhttp:3.10.0'
+  compile 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+  compile 'com.squareup.retrofit2:retrofit:2.4.0'
+  compile 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+  compile 'com.squareup.retrofit2:converter-moshi:2.4.0'
 }

@@ -1,3 +1,11 @@
 <resources>
   <string name="app_name">Training Kotlin</string>
+
+  <string name="home_loading">Loading gallery…</string>
+  <string name="home_retry">Retry</string>
+
+  <string name="details_width">Width</string>
+  <string name="details_height">Height</string>
+  <string name="details_view_count">View count</string>
+  <string name="details_dimen_format">%d px</string>
 </resources>

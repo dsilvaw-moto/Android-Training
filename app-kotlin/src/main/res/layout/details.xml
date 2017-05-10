@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<au.com.gridstone.training_kotlin.DetailsView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+  <ImageView
+      android:id="@+id/details_image"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:ignore="ContentDescription"
+      />
+
+  <GridLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:background="@color/imageTextOverlayBg"
+      android:columnCount="2"
+      android:padding="8dp"
+      android:useDefaultMargins="true"
+      >
+
+    <TextView
+        android:id="@+id/details_title"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill_horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        />
+
+    <TextView
+        android:id="@+id/details_date"
+        android:layout_columnSpan="2"
+        android:layout_gravity="fill_horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        />
+
+    <TextView
+        android:text="@string/details_width"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        />
+
+    <TextView
+        android:id="@+id/details_width"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
+
+    <TextView
+        android:text="@string/details_height"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        />
+
+    <TextView
+        android:id="@+id/details_height"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
+
+    <TextView
+        android:text="@string/details_view_count"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        />
+
+    <TextView
+        android:id="@+id/details_view_count"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
+
+  </GridLayout>
+
+</au.com.gridstone.training_kotlin.DetailsView>
