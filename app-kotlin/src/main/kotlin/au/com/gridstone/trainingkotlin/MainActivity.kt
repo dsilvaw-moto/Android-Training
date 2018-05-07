@@ -1,4 +1,4 @@
-package au.com.gridstone.training_kotlin
+package au.com.gridstone.trainingkotlin
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

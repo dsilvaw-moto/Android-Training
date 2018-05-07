@@ -1,10 +1,11 @@
 buildscript {
   repositories {
     jcenter()
+    google()
   }
 
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.2'
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.41'
   }
 }
 
@@ -12,13 +13,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion '25.0.2'
+  compileSdkVersion 27
+  buildToolsVersion '27.0.3'
 
   defaultConfig {
-    applicationId 'au.com.gridstone.training_kotlin'
+    applicationId 'au.com.gridstone.trainingkotlin'
     minSdkVersion 21
-    targetSdkVersion 25
+    targetSdkVersion 27
     versionCode 1
     versionName '1.0'
   }
@@ -35,6 +36,6 @@ android {
 }
 
 dependencies {
-  compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.2'
-  compile 'com.android.support:appcompat-v7:25.3.1'
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.41'
+  implementation 'com.android.support:appcompat-v7:27.1.1'
 }
