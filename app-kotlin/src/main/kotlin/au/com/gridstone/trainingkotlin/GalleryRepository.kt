@@ -1,6 +1,11 @@
-package au.com.gridstone.training_kotlin
+package au.com.gridstone.trainingkotlin
 
 import android.util.Log
+import au.com.gridstone.trainingkotlin.GalleryAction.RequestGallery
+import au.com.gridstone.trainingkotlin.GalleryResult.Error
+import au.com.gridstone.trainingkotlin.GalleryResult.Idle
+import au.com.gridstone.trainingkotlin.GalleryResult.Loading
+import au.com.gridstone.trainingkotlin.GalleryResult.Success
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.Single
@@ -43,31 +48,32 @@ object GalleryData {
   val actions: PublishSubject<GalleryAction> = PublishSubject.create()
 
   // Take RequestGallery Actions and act upon them, returning a GalleryResult.
-  val getGallery = ObservableTransformer<GalleryAction.RequestGallery, GalleryResult> { action ->
+  val getGallery = ObservableTransformer<RequestGallery, GalleryResult> { action ->
     action.flatMap {
       GalleryApi.imagesForPage(0)
           .map { (isSuccessful, errorMessage, value) ->
-            if (isSuccessful) GalleryResult.Success(
+            if (isSuccessful) Success(
                 // Take the images from the ApiResult and filter out all albums.
                 value?.data?.filter { !it.is_album } ?: emptyList())
-            else GalleryResult.Error(errorMessage ?: "Unknown error")
+            else Error(
+                errorMessage ?: "Unknown error")
           }
           .toObservable()
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .startWith(GalleryResult.Loading)
+          .startWith(Loading)
     }
   }
 
   val results: Observable<GalleryResult> = actions
       // For now, RequestGallery is the only type of action that does anything.
-      .ofType<GalleryAction.RequestGallery>()
+      .ofType<RequestGallery>()
       // Because we want to display initial data, we start with a synthetic RequestGallery.
-      .startWith(GalleryAction.RequestGallery)
+      .startWith(RequestGallery)
       // Transform RequestGallery into GalleryResult.
       .compose(getGallery)
       // Start with a blank state because ¯\_(ツ)_/¯
-      .startWith(GalleryResult.Idle)
+      .startWith(Idle)
       // Deliver the most recent Result to anyone who subscribes.
       .replay(1)
       .autoConnect()
@@ -77,8 +83,8 @@ object GalleryData {
  * The Imgur gallery API, allowing callers to query a list of images.
  */
 object GalleryApi {
-  const val ENDPOINT = "https://api.imgur.com/3/gallery/"
-  const val CLIENT_ID = "3436c108ccc17d3"
+  private const val ENDPOINT = "https://api.imgur.com/3/gallery/"
+  private const val CLIENT_ID = "3436c108ccc17d3"
 
   private val httpClient = OkHttpClient.Builder()
       .addInterceptor { chain ->

@@ -1,4 +1,4 @@
-package au.com.gridstone.training_kotlin
+package au.com.gridstone.trainingkotlin
 
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable

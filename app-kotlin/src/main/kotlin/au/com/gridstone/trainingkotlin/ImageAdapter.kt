@@ -1,4 +1,4 @@
-package au.com.gridstone.training_kotlin
+package au.com.gridstone.trainingkotlin
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import au.com.gridstone.trainingkotlin.ImageAdapter.ViewHolder
 import com.jakewharton.rxbinding2.view.clicks
 import com.squareup.picasso.Picasso
 import io.reactivex.Observable
@@ -14,7 +15,7 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Adapt a `List` of images for a `RecyclerView` and expose image clicks as a stream.
  */
-class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+class ImageAdapter : RecyclerView.Adapter<ViewHolder>() {
   private val clickSubject = PublishSubject.create<Image>()
   private var items = emptyList<Image>()
 

@@ -1,4 +1,4 @@
-package au.com.gridstone.training_kotlin
+package au.com.gridstone.trainingkotlin
 
 import android.content.Context
 import android.os.Bundle
@@ -29,14 +29,12 @@ class DetailsController(args: Bundle) : Controller(args) {
     if (view !is DetailsView) throw AssertionError("View must be DetailsView.")
     view.display(image)
   }
+}
 
-  private companion object {
-    const val KEY_IMAGE = "DetailsController.Image"
+private const val KEY_IMAGE = "Details.Image"
 
-    fun bundleImage(image: Image) = Bundle().apply {
-      putParcelable(KEY_IMAGE, image)
-    }
-  }
+private fun bundleImage(image: Image) = Bundle().apply {
+  putParcelable(KEY_IMAGE, image)
 }
 
 /**

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<au.com.gridstone.training_kotlin.DetailsView
+<au.com.gridstone.trainingkotlin.DetailsView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/details"
@@ -70,4 +70,4 @@
 
   </GridLayout>
 
-</au.com.gridstone.training_kotlin.DetailsView>
+</au.com.gridstone.trainingkotlin.DetailsView>

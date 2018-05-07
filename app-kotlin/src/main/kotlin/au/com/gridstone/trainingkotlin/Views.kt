@@ -1,4 +1,4 @@
-package au.com.gridstone.training_kotlin
+package au.com.gridstone.trainingkotlin
 
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.View
@@ -14,7 +14,9 @@ fun <V : View> ViewHolder.bindView(id: Int)
 
 @Suppress("UNCHECKED_CAST")
 private fun <T, V : View> required(id: Int, finder: T.(Int) -> View?)
-    = Lazy { t: T, desc -> t.finder(id) as V? ?: viewNotFound(id, desc) }
+    = Lazy { t: T, desc ->
+  t.finder(id) as V? ?: viewNotFound(id, desc)
+}
 
 @Suppress("unused")
 private val View.viewFinder: View.(Int) -> View?

@@ -1,4 +1,4 @@
-package au.com.gridstone.training_kotlin
+package au.com.gridstone.trainingkotlin
 
 import android.content.Context
 import android.graphics.Rect
@@ -13,6 +13,12 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ViewAnimator
+import au.com.gridstone.trainingkotlin.GalleryResult.Error
+import au.com.gridstone.trainingkotlin.GalleryResult.Idle
+import au.com.gridstone.trainingkotlin.GalleryResult.Loading
+import au.com.gridstone.trainingkotlin.GalleryResult.Success
+import au.com.gridstone.trainingkotlin.HomeUiEvent.RequestGallery
+import au.com.gridstone.trainingkotlin.HomeUiEvent.ViewImage
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.RouterTransaction
 import com.jakewharton.rxbinding2.view.clicks
@@ -54,10 +60,12 @@ class HomeController : Controller() {
     disposables += GalleryData.results
         .map { result ->
           when (result) {
-            is GalleryResult.Idle -> HomeUiModel.Idle
-            is GalleryResult.Loading -> HomeUiModel.Loading
-            is GalleryResult.Success -> HomeUiModel.Success(result.images)
-            is GalleryResult.Error -> HomeUiModel.Error(result.message)
+            is Idle -> HomeUiModel.Idle
+            is Loading -> HomeUiModel.Loading
+            is Success -> HomeUiModel.Success(
+                result.images)
+            is Error -> HomeUiModel.Error(
+                result.message)
           }
         }
         .subscribe { homeUiModel -> view.display(homeUiModel) }
@@ -66,14 +74,15 @@ class HomeController : Controller() {
     val events = view.events.share()
 
     // Map RequestGallery Events to RequestGallery Actions.
-    disposables += events.ofType<HomeUiEvent.RequestGallery>()
+    disposables += events.ofType<RequestGallery>()
         .map { GalleryAction.RequestGallery }
         .subscribe(GalleryData.actions::onNext) // BLEH!
 
     // Navigate to details view when user taps on images.
-    disposables += events.ofType<HomeUiEvent.ViewImage>()
+    disposables += events.ofType<ViewImage>()
         .subscribe { (image) ->
-          router.pushController(RouterTransaction.with(DetailsController(image)))
+          router.pushController(RouterTransaction.with(
+              DetailsController(image)))
         }
   }
 
@@ -94,8 +103,8 @@ class HomeView(context: Context, attrs: AttributeSet) : LinearLayout(context, at
   private val adapter = ImageAdapter()
 
   val events: Observable<HomeUiEvent> = Observable.merge(
-      adapter.clicks.map { HomeUiEvent.ViewImage(it) },
-      Observable.defer { retryButton.clicks().map { HomeUiEvent.RequestGallery } })
+      adapter.clicks.map { ViewImage(it) },
+      Observable.defer { retryButton.clicks().map { RequestGallery } })
 
   override fun onFinishInflate() {
     super.onFinishInflate()
