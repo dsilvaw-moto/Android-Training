@@ -1,13 +1,10 @@
 package au.com.gridstone.trainingkotlin
 
 import android.util.Log
-import au.com.gridstone.trainingkotlin.GalleryAction.RequestGallery
 import au.com.gridstone.trainingkotlin.GalleryResult.Error
-import au.com.gridstone.trainingkotlin.GalleryResult.Idle
 import au.com.gridstone.trainingkotlin.GalleryResult.Loading
 import au.com.gridstone.trainingkotlin.GalleryResult.Success
 import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -22,17 +19,9 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 /**
- * An action to take upon gallery data.
- */
-sealed class GalleryAction {
-  object RequestGallery : GalleryAction()
-}
-
-/**
  * The resulting state of gallery data.
  */
 sealed class GalleryResult {
-  object Idle : GalleryResult()
   object Loading : GalleryResult()
   data class Success(val images: List<Image>) : GalleryResult()
   data class Error(val message: String) : GalleryResult()
@@ -44,45 +33,45 @@ sealed class GalleryResult {
  * If the application were more complex this object could become a class, allowing the unused vals
  * to be GC'd.
  */
-object GalleryData {
-  val actions: PublishSubject<GalleryAction> = PublishSubject.create()
+object GalleryRepository {
+  private val refreshActions: PublishSubject<Unit> = PublishSubject.create()
 
-  // Take RequestGallery Actions and act upon them, returning a GalleryResult.
-  val getGallery = ObservableTransformer<RequestGallery, GalleryResult> { action ->
-    action.flatMap {
-      GalleryApi.imagesForPage(0)
-          .map { (isSuccessful, errorMessage, value) ->
-            if (isSuccessful) Success(
-                // Take the images from the ApiResult and filter out all albums.
-                value?.data?.filter { !it.is_album } ?: emptyList())
-            else Error(
-                errorMessage ?: "Unknown error")
-          }
-          .toObservable()
-          .subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread())
-          .startWith(Loading)
-    }
-  }
+  private val getGallery: Observable<GalleryResult> = GalleryApi.imagesForPage(0)
+      .map { result ->
+        if (result.completelySuccessful) {
+          // Take the images from the ApiResult and filter out all albums.
+          Success(result.requiredValue.data.filter { !it.is_album })
+        } else {
+          Error(result.response()?.errorBody()?.toString() ?: "Unknown error")
+        }
+      }
+      .toObservable()
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+      .startWith(Loading)
 
-  val results: Observable<GalleryResult> = actions
-      // For now, RequestGallery is the only type of action that does anything.
-      .ofType<RequestGallery>()
-      // Because we want to display initial data, we start with a synthetic RequestGallery.
-      .startWith(RequestGallery)
-      // Transform RequestGallery into GalleryResult.
-      .compose(getGallery)
-      // Start with a blank state because ¯\_(ツ)_/¯
-      .startWith(Idle)
+  val results: Observable<GalleryResult> = refreshActions
+      // Start with a synthetic refresh request to attempt to retrieve initial data.
+      .startWith(Unit)
+      // Map refresh actions to gallery requests.
+      .switchMap { getGallery }
+      // Start with Loading so there's an initial result.
+      .startWith(Loading)
+      // Filter out any duplicate Results.
+      .distinctUntilChanged()
       // Deliver the most recent Result to anyone who subscribes.
       .replay(1)
       .autoConnect()
+
+  fun refresh() {
+    refreshActions.onNext(Unit)
+  }
 }
 
 /**
  * The Imgur gallery API, allowing callers to query a list of images.
  */
-object GalleryApi {
+private object GalleryApi {
   private const val ENDPOINT = "https://api.imgur.com/3/gallery/"
   private const val CLIENT_ID = "3436c108ccc17d3"
 
@@ -106,10 +95,15 @@ object GalleryApi {
       .build()
       .create(GalleryService::class.java)
 
-  fun imagesForPage(page: Int): Single<ApiResult<Gallery>> = webApi.listGallery(page)
-      .map { ApiResult(it) }
+  fun imagesForPage(page: Int): Single<Result<Gallery>> = webApi.listGallery(page)
 
   private interface GalleryService {
     @GET("hot/viral/{page}") fun listGallery(@Path("page") page: Int): Single<Result<Gallery>>
   }
 }
+
+private val Result<*>.completelySuccessful: Boolean
+  get() = !isError && response()?.isSuccessful ?: false
+
+private val <T : Any> Result<T>.requiredValue: T
+  get() = requireNotNull(response()?.body())

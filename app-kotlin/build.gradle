@@ -11,6 +11,13 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+androidExtensions {
+  // Enable automatic Parcelable support
+  // https://kotlinlang.org/docs/tutorials/android-plugin.html#parcelable
+  experimental = true
+}
 
 android {
   compileSdkVersion 27
