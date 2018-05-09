@@ -42,7 +42,7 @@ class ImgurPostFragment : Fragment() {
     savedInstanceState: Bundle?
   ): View? {
     val toReturn = inflater.inflate(R.layout.fragment_imgur_post, container, false)
-    if(savedInstanceState!=null) onRestoreInstanceState(savedInstanceState)
+    if (savedInstanceState != null) onRestoreInstanceState(savedInstanceState)
     showData(toShow!!, toReturn)
     return toReturn
   }

@@ -25,8 +25,8 @@ import kotlinx.android.synthetic.main.fragment_imgur_feed_list.view.*
  * Activities containing this fragment MUST implement the
  * [ImgurFeedFragment.OnListFragmentInteractionListener] interface.
  */
-class ImgurFeedFragment() : Fragment() ,
-        SwipeRefreshLayout.OnRefreshListener {
+class ImgurFeedFragment() : Fragment(),
+    SwipeRefreshLayout.OnRefreshListener {
 
   private var columnCount = 1
 
@@ -60,7 +60,7 @@ class ImgurFeedFragment() : Fragment() ,
         adapter = feed_adapter;
       }
     }
-    if(savedInstanceState!=null)
+    if (savedInstanceState != null)
       onRestoreInstanceState(savedInstanceState);
     return view
   }
@@ -68,7 +68,7 @@ class ImgurFeedFragment() : Fragment() ,
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     outState.putParcelable(KEY_SCROLL_POSITION, list!!.layoutManager.onSaveInstanceState())
-    if(feed!=null) outState.putParcelableArray(KEY_FEED, feed!!.toTypedArray())
+    if (feed != null) outState.putParcelableArray(KEY_FEED, feed!!.toTypedArray())
   }
 
   private fun onRestoreInstanceState(inState: Bundle) {
@@ -87,7 +87,6 @@ class ImgurFeedFragment() : Fragment() ,
     Toast.makeText(this.context, "Loading", Toast.LENGTH_SHORT)
     loadData()
   }
-
 
   private fun loadData() {
     ImgurClient.getInterface()
@@ -118,7 +117,6 @@ class ImgurFeedFragment() : Fragment() ,
   private fun handleError(error: Throwable) {
     Log.d("DATA", error.localizedMessage)
   }
-
 
   override fun onAttach(context: Context) {
     super.onAttach(context)

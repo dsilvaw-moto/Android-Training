@@ -1,12 +1,12 @@
 buildscript {
-    repositories {
-        jcenter()
-        google()
-    }
+  repositories {
+    jcenter()
+    google()
+  }
 
-    dependencies {
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.41'
-    }
+  dependencies {
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.41'
+  }
 }
 
 apply plugin: 'com.android.application'
@@ -14,53 +14,53 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+  compileSdkVersion 27
+  buildToolsVersion '27.0.3'
 
-    defaultConfig {
-        applicationId 'au.com.gridstone.trainingkotlin'
-        minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 1
-        versionName '1.0'
-    }
+  defaultConfig {
+    applicationId 'au.com.gridstone.trainingkotlin'
+    minSdkVersion 21
+    targetSdkVersion 27
+    versionCode 1
+    versionName '1.0'
+  }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
+  buildTypes {
+    release {
+      minifyEnabled false
     }
+  }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+  }
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.41'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.2.41'
+  implementation 'com.android.support:appcompat-v7:27.1.1'
+  implementation 'com.android.support:recyclerview-v7:27.1.1'
+  implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
-    // Rx
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.14-RC1'
+  // Rx
+  implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+  implementation 'io.reactivex.rxjava2:rxjava:2.1.14-RC1'
 
-    //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+  //Retrofit
+  implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+  implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+  implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
-    // Gson
-    implementation 'com.google.code.gson:gson:2.8.4'
+  // Gson
+  implementation 'com.google.code.gson:gson:2.8.4'
 
-    // Piccaso & Glide
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+  // Piccaso & Glide
+  implementation 'com.squareup.picasso:picasso:2.5.2'
+  implementation 'com.github.bumptech.glide:glide:4.7.1'
+  annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
-    // Others
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+  // Others
+  implementation 'com.jakewharton.threetenabp:threetenabp:1.1.0'
+  debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+  releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
