@@ -2,13 +2,13 @@ package au.com.gridstone.trainingkotlin.main
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 
-import au.com.gridstone.trainingkotlin.main.ImgurFeedFragment.OnListFragmentInteractionListener
 import au.com.gridstone.trainingkotlin.imgur.ImgurPost
 
 import kotlinx.android.synthetic.main.list_item.view.*
@@ -16,17 +16,18 @@ import au.com.gridstone.trainingkotlin.R
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class ImgurFeedRecyclerViewAdapter(
-  private var values: List<ImgurPost>,
-  private val listener: OnListFragmentInteractionListener?
+class ImgurFeedRecyclerViewAdapter( private var values: List<ImgurPost>,
+                                    private var listener: ListInteractionListener
 ) : RecyclerView.Adapter<ImgurFeedRecyclerViewAdapter.ViewHolder>() {
 
-  private val mOnClickListener: View.OnClickListener
+  interface ListInteractionListener{
+    fun onListInteraction(interacted:ImgurPost)
+  }
 
+  private val mOnClickListener: View.OnClickListener
   init {
     mOnClickListener = View.OnClickListener { v ->
       val item = v.tag as ImgurPost
-      listener?.onListFragmentInteraction(item)
     }
   }
 

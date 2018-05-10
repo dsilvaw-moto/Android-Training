@@ -3,9 +3,7 @@ package au.com.gridstone.trainingkotlin.imgur
 import android.os.Parcel
 import android.os.Parcelable
 
-data class ImgurRequest(
-  val data: List<ImgurPost>?,
-  val success: Boolean,
+data class ImgurRequest(  val data: List<ImgurPost>?, val success: Boolean,
   val status: Int
 ) : Parcelable {
   constructor(parcel: Parcel) : this(

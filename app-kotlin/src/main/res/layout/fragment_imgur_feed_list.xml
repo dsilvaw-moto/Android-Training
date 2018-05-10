@@ -6,7 +6,6 @@
     android:name="au.com.gridstone.trainingkotlin.ImgurFeedFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.ImgurFeedFragment"
     >
 
   <android.support.v4.widget.SwipeRefreshLayout
@@ -15,7 +14,7 @@
       android:layout_height="match_parent"
       >
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+        android:id="@+id/feed_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/list_item"

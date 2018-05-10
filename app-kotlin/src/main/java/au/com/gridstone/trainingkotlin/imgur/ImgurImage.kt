@@ -3,30 +3,22 @@ package au.com.gridstone.trainingkotlin.imgur
 import android.os.Parcel
 import android.os.Parcelable
 
-data class ImgurImage(
-  val id: String,
-  val type: String,
-  val title: String,
-  val description: String,
-  val link: String,
-  val width: Int,
-  val height: Int
-) : Parcelable {
-  constructor(parcel: Parcel) : this(
-      parcel.readString(),
-      parcel.readString(),
-      parcel.readString(),
-      parcel.readString(),
-      parcel.readString(),
-      parcel.readInt(),
-      parcel.readInt()
-  ) {
-  }
+data class ImgurImage(val id: String, val type: String,
+                      val title: String,
+                      val description: String,
+                      val link: String,
+                      val width: Int,
+                      val height: Int) : Parcelable {
 
-  override fun writeToParcel(
-    parcel: Parcel,
-    flags: Int
-  ) {
+  constructor(parcel: Parcel) : this(parcel.readString(),
+                                     parcel.readString(),
+                                     parcel.readString(),
+                                     parcel.readString(),
+                                     parcel.readString(),
+                                     parcel.readInt(),
+                                     parcel.readInt())
+
+  override fun writeToParcel(parcel: Parcel, flags: Int) {
     parcel.writeString(id)
     parcel.writeString(type)
     parcel.writeString(title)

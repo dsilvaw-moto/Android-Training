@@ -4,38 +4,31 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.*
 
-data class ImgurPost(
-  val title: String,
-  val type: String,
-  val description: String,
-  val datetime: Date,
-  val animated: Boolean = false,
-  val views: Int,
-  val link: String,
-  val is_album: Boolean,
-  var images: List<ImgurImage>,
-  val width: Int,
-  val height: Int
-) : Parcelable {
-  constructor(parcel: Parcel) : this(
-      parcel.readString(),
-      parcel.readString(),
-      parcel.readString(),
-      Date(parcel.readLong()),
-      parcel.readByte() != 0.toByte(),
-      parcel.readInt(),
-      parcel.readString(),
-      parcel.readByte() != 0.toByte(),
-      parcel.createTypedArrayList(ImgurImage),
-      parcel.readInt(),
-      parcel.readInt()
-  ) {
-  }
+data class ImgurPost(val title: String,
+                     val type: String,
+                     val description: String,
+                     val datetime: Date,
+                     val animated: Boolean = false,
+                     val views: Int,
+                     val link: String,
+                     val is_album: Boolean,
+                     var images: List<ImgurImage>,
+                     val width: Int,
+                     val height: Int) : Parcelable {
 
-  override fun writeToParcel(
-    parcel: Parcel,
-    flags: Int
-  ) {
+  constructor(parcel: Parcel) : this(parcel.readString(),
+                                     parcel.readString(),
+                                     parcel.readString(),
+                                     Date(parcel.readLong()),
+                                     parcel.readByte() != 0.toByte(),
+                                     parcel.readInt(),
+                                     parcel.readString(),
+                                     parcel.readByte() != 0.toByte(),
+                                     parcel.createTypedArrayList(ImgurImage),
+                                     parcel.readInt(),
+                                     parcel.readInt())
+
+  override fun writeToParcel(parcel: Parcel, flags: Int) {
     parcel.writeString(title)
     parcel.writeString(type)
     parcel.writeString(description)

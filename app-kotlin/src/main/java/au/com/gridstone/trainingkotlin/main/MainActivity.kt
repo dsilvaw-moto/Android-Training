@@ -14,104 +14,35 @@ import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.activity_main.frameContainer
 
-class MainActivity : AppCompatActivity(),
-    ImgurFeedFragment.OnListFragmentInteractionListener,
-    ImgurPostFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity() {
 
   enum class State { FEED,
     POST
   }
 
-  private val fragmentManager = supportFragmentManager
-
   private var state = State.FEED
-  private var feed: Fragment? = null
-  private var post: Fragment? = null
 
-  private lateinit var router:Router;
+  private lateinit var router: Router;
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    if (savedInstanceState == null) {
-      feed = ImgurFeedFragment.newInstance(1)
-      showFeed()
-    }
-
     // Conductor
     router = Conductor.attachRouter(this, frameContainer, savedInstanceState)
-    if(!router.hasRootController()){
-      router.setRoot(RouterTransaction.with(ImgurFe))
-    }
-  }
-
-  fun transitFragment(
-    toTransit: Fragment,
-    addToBackStack: Boolean
-  ) {
-    val fragmentTransaction = fragmentManager.beginTransaction()
-    fragmentTransaction.replace(R.id.frameContainer, toTransit)
-    if (addToBackStack) fragmentTransaction.addToBackStack(toTransit.toString())
-    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-    fragmentTransaction.commit()
-  }
-
-  private fun showFeed() {
-    state = FEED
-    transitFragment(feed!!, false)
-  }
-
-  private fun showPost(addToBackStack: Boolean) {
-    state = POST
-    transitFragment(post!!, addToBackStack)
-  }
-
-  override fun onListFragmentInteraction(item: ImgurPost?) {
-    post = ImgurPostFragment.newInstance(item!!)
-    showPost(true)
-  }
-
-  override fun onFragmentInteraction(uri: Uri) {
-
-  }
-
-  override fun onSaveInstanceState(
-    outState: Bundle?
-  ) {
-    if (outState != null)
-      outState.putInt(KEY_STATE, state.ordinal)
-    fragmentManager.putFragment(outState, KEY_FEED_FRAGMENT, feed)
-    if (post != null && post!!.isAdded)
-      fragmentManager.putFragment(outState, KEY_POST_FRAGMENT, post)
-    super.onSaveInstanceState(outState)
-  }
-
-  override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-    super.onRestoreInstanceState(savedInstanceState)
-    if (savedInstanceState != null) {
-      feed = fragmentManager.getFragment(savedInstanceState, KEY_FEED_FRAGMENT)
-      val tempPost = fragmentManager.getFragment(savedInstanceState, KEY_POST_FRAGMENT)
-      if (tempPost != null && tempPost is ImgurPostFragment) {
-        post = tempPost
-      }
-      val index = savedInstanceState.getInt(KEY_STATE, 0)
-      state = State.values()[index]
-      when (state) {
-        FEED -> showFeed()
-        POST -> showPost(true)
-      }
+    if (!router.hasRootController()) {
+      router.setRoot(RouterTransaction.with(ImgurFeedController()))
     }
   }
 
   override fun onBackPressed() {
-    state = FEED
-    super.onBackPressed()
+    if (!router.handleBack()) {
+      super.onBackPressed()
+    }
   }
 
   companion object {
     const val KEY_FEED_FRAGMENT = "feed_fragment"
     const val KEY_POST_FRAGMENT = "post_fragment"
     const val KEY_STATE = "state"
-
   }
 }
