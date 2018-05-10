@@ -80,7 +80,9 @@ class ImgurFeedFragment() : Fragment(),
     super.onActivityCreated(savedInstanceState)
     swiperefresh.setOnRefreshListener(this)
     showProgressBar()
-    loadData()
+    if(savedInstanceState==null){
+      loadData()
+    }
   }
 
   override fun onRefresh() {

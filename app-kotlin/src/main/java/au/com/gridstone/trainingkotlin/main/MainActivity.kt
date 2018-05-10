@@ -9,6 +9,10 @@ import au.com.gridstone.trainingkotlin.imgur.ImgurPost
 import au.com.gridstone.trainingkotlin.R
 import au.com.gridstone.trainingkotlin.main.MainActivity.State.FEED
 import au.com.gridstone.trainingkotlin.main.MainActivity.State.POST
+import com.bluelinelabs.conductor.Conductor
+import com.bluelinelabs.conductor.Router
+import com.bluelinelabs.conductor.RouterTransaction
+import kotlinx.android.synthetic.main.activity_main.frameContainer
 
 class MainActivity : AppCompatActivity(),
     ImgurFeedFragment.OnListFragmentInteractionListener,
@@ -24,12 +28,20 @@ class MainActivity : AppCompatActivity(),
   private var feed: Fragment? = null
   private var post: Fragment? = null
 
+  private lateinit var router:Router;
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     if (savedInstanceState == null) {
       feed = ImgurFeedFragment.newInstance(1)
       showFeed()
+    }
+
+    // Conductor
+    router = Conductor.attachRouter(this, frameContainer, savedInstanceState)
+    if(!router.hasRootController()){
+      router.setRoot(RouterTransaction.with(ImgurFe))
     }
   }
 
